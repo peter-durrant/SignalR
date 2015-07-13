@@ -73,7 +73,7 @@ Authentication is handled server-side. When establishing a connection, it is ben
 
 #### Authentication Attribute
 
-Create a custom authorization attribute (implementing AuthorizeAttribute). Override AuthorizeHubConnection to return true if authorised, otherwise return false. 
+Create a custom authorization attribute (implementing AuthorizeAttribute). Override AuthorizeHubConnection to return true if authorised, otherwise return false. If the function returns false, the connection will be terminated.
 
 ```c#
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
