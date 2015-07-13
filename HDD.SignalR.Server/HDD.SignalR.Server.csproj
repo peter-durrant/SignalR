@@ -64,8 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizeConnection.cs" />
     <Compile Include="IApplicationContext.cs" />
-    <Compile Include="IContract.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="MessageHub.cs" />
     <Compile Include="Server.cs" />

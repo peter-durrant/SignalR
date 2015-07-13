@@ -30,6 +30,7 @@
 using HDD.Utility;
 using Microsoft.AspNet.SignalR.Client;
 using System;
+using System.Collections.Generic;
 
 namespace HDD.SignalR.Client
 {
@@ -39,7 +40,11 @@ namespace HDD.SignalR.Client
 
         public Client(Uri uri)
         {
-            _connection = new HubConnection(uri.AbsoluteUri);
+            var queryStringParameters = new Dictionary<string, string>();
+            queryStringParameters.Add("token", "secret");
+         
+            _connection = new HubConnection(uri.AbsoluteUri, queryStringParameters);
+            
             CreateHubProxies();
         }
 

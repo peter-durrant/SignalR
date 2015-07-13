@@ -69,6 +69,33 @@ class MessageHub : Hub
 
 ### Authentication
 
-When establishing a connection, it is beneficial to complete authentication/handshake activities when establishing the connection. This enables the client connection to close. Without this step, the server will be required to send additional messaging to the client to instruct the client to close the connection. Currently, the SignalR library does not provide functionality for servers to disconnect clients.
+Authentication is handled server-side. When establishing a connection, it is beneficial to complete authentication/handshake activities when establishing the connection. This enables the client connection to be closed during negotiation if it does not authenticate successfully. Without this step, the server will be required to send additional messaging to the client to instruct the client to close the connection. Currently, the SignalR library does not provide functionality for servers to disconnect clients.
 
 #### Authentication Attribute
+
+Create a custom authorization attribute (implementing AuthorizeAttribute). Override AuthorizeHubConnection to return true if authorised, otherwise return false. 
+
+```c#
+[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+class AuthorizeConnection : AuthorizeAttribute
+{
+    public override bool AuthorizeHubConnection(HubDescriptor hubDescriptor, IRequest request)
+    {
+    	var authorized = false;
+    	
+    	// Can the connection be authorised?
+    	
+    	return authorized;
+    }
+}
+```
+
+Decorate the hub(s) with the AuthorizeConnection attribute will enable authorisation.
+
+```c#
+[AuthorizeConnection]
+public class MessageHub : Hub
+{
+```
+
+By providing application context to the hub, the hub can access application-wide state in order to determine the correct behaviour (if required).

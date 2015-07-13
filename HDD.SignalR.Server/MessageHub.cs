@@ -31,6 +31,7 @@ using Microsoft.AspNet.SignalR;
 
 namespace HDD.SignalR.Server
 {
+    [AuthorizeConnection]
     public class MessageHub : Hub
     {
         private static IApplicationContext _context;

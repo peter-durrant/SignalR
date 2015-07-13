@@ -27,11 +27,20 @@
 
 #endregion
 
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
+using System;
 
 namespace HDD.SignalR.Server
 {
-    interface IContract
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    class AuthorizeConnection : AuthorizeAttribute
     {
-        void SendMessage(string message);
+        public override bool AuthorizeHubConnection(HubDescriptor hubDescriptor, IRequest request)
+        {
+            // This is a trivial authorization mechanism - the word "secret" must be passed in the query string "token" parameter
+            var token = request.QueryString["token"];
+            return (token == "secret");
+        }
     }
 }
