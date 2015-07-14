@@ -84,13 +84,14 @@ class AuthorizeConnection : AuthorizeAttribute
     	var authorized = false;
     	
     	// Can the connection be authorised?
+    	// Add logic to determine whether authorized should be set to true
     	
     	return authorized;
     }
 }
 ```
 
-Decorate the hub(s) with the AuthorizeConnection attribute will enable authorisation.
+Decorate the hub(s) with the AuthorizeConnection attribute to enable authorisation using this mechanism.
 
 ```c#
 [AuthorizeConnection]
