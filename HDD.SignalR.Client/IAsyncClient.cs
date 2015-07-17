@@ -5,20 +5,22 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 
 namespace HDD.SignalR.Client
 {
-    interface IClient : IDisposable
+    interface IAsyncClient : IDisposable
     {
         /// <summary>
         /// Connect to a server
         /// </summary>
-        void Connect();
+        Task Connect();
 
         /// <summary>
         /// Connect to a server
         /// </summary>
         /// <param name="transportType">The transport mechanism to use</param>
-        void Connect(Enums.TransportType transportType);
+        /// <returns>The async task</returns>
+        Task Connect(Enums.TransportType transportType);
     }
 }

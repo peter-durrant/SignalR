@@ -8,15 +8,16 @@ using HDD.Utility;
 using Microsoft.AspNet.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TransportType = HDD.SignalR.Client.Enums.TransportType;
 
 namespace HDD.SignalR.Client
 {
-    public class Client : IClient, IMessageHubProxy
+    public class AsyncClient : IAsyncClient, IMessageHubProxy
     {
         private HubConnection _connection;
 
-        public Client(Uri uri)
+        public AsyncClient(Uri uri)
         {
             var queryStringParameters = new Dictionary<string, string>();
             queryStringParameters.Add("token", "secret");
@@ -26,26 +27,26 @@ namespace HDD.SignalR.Client
             CreateHubProxies();
         }
 
-        public void Connect()
+        public async Task Connect()
         {
-            _connection.Start().Wait();
+            await _connection.Start();
         }
 
-        public void Connect(Enums.TransportType transportType)
+        public async Task Connect(Enums.TransportType transportType)
         {
             switch (transportType)
             {
                 case TransportType.LongPolling:
-                    _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.LongPollingTransport()).Wait();
+                    await _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.LongPollingTransport());
                     break;
                 case TransportType.ServerSentEvents:
-                    _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.ServerSentEventsTransport()).Wait();
+                    await _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.ServerSentEventsTransport());
                     break;
                 case TransportType.WebSockets:
-                    _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.WebSocketTransport()).Wait();
+                    await _connection.Start(new Microsoft.AspNet.SignalR.Client.Transports.WebSocketTransport());
                     break;
                 default:
-                    _connection.Start().Wait();
+                    await _connection.Start();
                     break;
             }
         }

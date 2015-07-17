@@ -9,28 +9,30 @@ using HDD.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using TransportType = HDD.SignalR.Client.Enums.TransportType;
 
 namespace HDD.SignalR.Test
 {
     [TestClass]
-    public class SignalRClientTest
+    public class SignalRAsyncClientTest
     {
         [TestMethod]
-        public void Client_ConnectToServer_ConnectionSucceeds()
+        public async Task AsyncClient_ConnectToServer_ConnectionSucceeds()
         {
             var port = Network.GetTcpPort();
             var uriString = string.Format("http://localhost:{0}", port);
             var uri = new Uri(uriString);
-
+                
             var applicationContext = Substitute.For<IApplicationContext>();
             using (var server = new Server.Server(uri))
             {
                 server.Start(applicationContext);
 
-                using (var client = new Client.Client(uri))
+                using (var client = new Client.AsyncClient(uri))
                 {
-                    client.Connect(Client.Enums.TransportType.ServerSentEvents);
+                    await client.Connect(Client.Enums.TransportType.ServerSentEvents);
                 }
             }
         }
