@@ -4,6 +4,7 @@
 
 #endregion
 
+using Microsoft.AspNet.SignalR;
 using Owin;
 
 namespace HDD.SignalR.Server
@@ -12,7 +13,8 @@ namespace HDD.SignalR.Server
     {
         public void Configuration(IAppBuilder app)
         {
-            app.MapSignalR();
+            var config = new HubConfiguration { Resolver = new DefaultDependencyResolver() };
+            app.MapSignalR(config);
         }
     }
 }
