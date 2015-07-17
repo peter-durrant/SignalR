@@ -18,16 +18,14 @@ It can be supplied explicitly meaning that it could be named differently.
 _server = WebApp.Start<Startup>(_uri.AbsoluteUri);
 ```
 
-If the server is disposed, the resolver is disposed too. Therefore a new resolver needs to be created on startup
+If the server is disposed, the resolver is disposed too. Therefore a new resolver needs to be created on startup and assigned to the GlobalHost.DependencyResolver
 
 ```c#
-class Startup
+public void Configuration(IAppBuilder app)
 {
-    public void Configuration(IAppBuilder app)
-    {
-        var config = new HubConfiguration { Resolver = new DefaultDependencyResolver() };
-        app.MapSignalR(config);
-    }
+    GlobalHost.DependencyResolver = new DefaultDependencyResolver();
+    var config = new HubConfiguration { Resolver = GlobalHost.DependencyResolver };
+    app.MapSignalR(config);
 }
 ```
 

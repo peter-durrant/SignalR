@@ -13,7 +13,8 @@ namespace HDD.SignalR.Server
     {
         public void Configuration(IAppBuilder app)
         {
-            var config = new HubConfiguration { Resolver = new DefaultDependencyResolver() };
+            GlobalHost.DependencyResolver = new DefaultDependencyResolver();
+            var config = new HubConfiguration { Resolver = GlobalHost.DependencyResolver };
             app.MapSignalR(config);
         }
     }
