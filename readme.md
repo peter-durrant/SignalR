@@ -4,6 +4,33 @@
 
 ## Hubs
 
+### Startup
+
+The WebApp.Start method assumes a Startup class is available to map the hubs so <Startup> is not required.
+
+```c#
+_server = WebApp.Start(_uri.AbsoluteUri);
+```
+
+It can be supplied explicitly meaning that it could be named differently.
+
+```c#
+_server = WebApp.Start<Startup>(_uri.AbsoluteUri);
+```
+
+If the server is disposed, the resolver is disposed too. Therefore a new resolver needs to be created on startup
+
+```c#
+class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        var config = new HubConfiguration { Resolver = new DefaultDependencyResolver() };
+        app.MapSignalR(config);
+    }
+}
+```
+
 ### Methods
 
 #### Server to Client Messaging
