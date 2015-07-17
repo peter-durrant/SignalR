@@ -14,13 +14,13 @@ namespace HDD.SignalR.Client
         /// <summary>
         /// Connect to a server
         /// </summary>
-        Task Connect();
+        Task<bool> Connect();
 
         /// <summary>
         /// Connect to a server
         /// </summary>
         /// <param name="transportType">The transport mechanism to use</param>
-        /// <returns>The async task</returns>
-        Task Connect(Enums.TransportType transportType);
+        /// <returns>The async task - returns true if connected, otherwise false</returns>
+        Task<bool> Connect(Enums.TransportType transportType);
     }
 }

@@ -26,12 +26,13 @@ namespace HDD.SignalR.Client
             CreateHubProxies();
         }
 
-        public void Connect()
+        public bool Connect()
         {
             _connection.Start().Wait();
+            return _connection.State == ConnectionState.Connected;
         }
 
-        public void Connect(Enums.TransportType transportType)
+        public bool Connect(Enums.TransportType transportType)
         {
             switch (transportType)
             {
@@ -48,6 +49,8 @@ namespace HDD.SignalR.Client
                     _connection.Start().Wait();
                     break;
             }
+
+            return _connection.State == ConnectionState.Connected;
         }
 
         private void CreateHubProxies()

@@ -13,12 +13,14 @@ namespace HDD.SignalR.Client
         /// <summary>
         /// Connect to a server
         /// </summary>
-        void Connect();
+        /// <returns>true if connected, otherwise false</returns>
+        bool Connect();
 
         /// <summary>
         /// Connect to a server
         /// </summary>
         /// <param name="transportType">The transport mechanism to use</param>
-        void Connect(Enums.TransportType transportType);
+        /// <returns>true if connected, otherwise false</returns>
+        bool Connect(Enums.TransportType transportType);
     }
 }
