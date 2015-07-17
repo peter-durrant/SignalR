@@ -100,3 +100,11 @@ public class MessageHub : Hub
 ```
 
 By providing application context to the hub, the hub can access application-wide state in order to determine the correct behaviour (if required).
+
+# Testing
+
+The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named COMPONENT\_ACTIVITY\_EXPECTEDRESULT.
+
+## NSubstitute
+
+[NSusbstitute](http://nsubstitute.github.io/) is used for various reasons such as to mock objects from their interface.
