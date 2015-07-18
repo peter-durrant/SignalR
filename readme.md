@@ -194,9 +194,9 @@ _client.OnMessage += (se, ev) =>
 
 # Testing
 
-The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named `COMPONENT\_ACTIVITY\_EXPECTEDRESULT`.
+The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named `COMPONENT_ACTIVITY_EXPECTEDRESULT`.
 
-For example, the unit test `Client\_ConnectMultipleClientsToServer\_ConnectionsSucceed` exercises the Client component, attempts to connect multiple clients to the server, and expects all of the connections to succeed.
+For example, the unit test `Client_ConnectMultipleClientsToServer_ConnectionsSucceed` exercises the Client component, attempts to connect multiple clients to the server, and expects all of the connections to succeed.
 
 ## NSubstitute
 
