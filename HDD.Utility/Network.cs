@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 
 namespace HDD.Utility
@@ -7,11 +8,22 @@ namespace HDD.Utility
     {
         public static int GetTcpPort()
         {
-            TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            int port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            listener.Stop();
             return port;
+        }
+
+        public static List<string> GetHostIpAddresses()
+        {
+            var ipAddresses = new List<string>();
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                ipAddresses.Add(ip.ToString());
+            }
+            return ipAddresses;
         }
     }
 }
