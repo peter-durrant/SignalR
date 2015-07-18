@@ -1,5 +1,7 @@
 # SignalR Client Server Concepts
 
+This code uses SignalR 2.2.0. See the [SignalR documentation](http://www.asp.net/signalr) for up-to-date information.
+
 ## Server
 
 ## Hubs
@@ -92,9 +94,13 @@ class MessageHub : Hub
 }
 ```
 
+By providing application context to the hub, the hub can access application-wide state in order to determine the correct behaviour (if required).
+
 ### Authentication
 
 Authentication is handled server-side. When establishing a connection, it is beneficial to complete authentication/handshake activities when establishing the connection. This enables the client connection to be closed during negotiation if it does not authenticate successfully. Without this step, the server will be required to send additional messaging to the client to instruct the client to close the connection. Currently, the SignalR library does not provide functionality for servers to disconnect clients.
+
+If the server needs to disconnect the client and provide a readon, then an implementator can move authentication to a dedicated message and await a response from the server confirming successful negotiation.
 
 #### Authentication Attribute
 
@@ -124,7 +130,48 @@ public class MessageHub : Hub
 {
 ```
 
-By providing application context to the hub, the hub can access application-wide state in order to determine the correct behaviour (if required).
+## Client
+
+The HDD.SignalR.Client project includes:
+* Synchronous client - Client (implements IClient)
+* Asynchronous client - AsyncClient (implenents IAsyncClient)
+
+### Synchronous
+
+A synchronous client will block it's thread until an action completes. Networking introduces latency, so it is recommended to use asynchronous clients where possible.
+
+On attempting to establish a connection, the thread will block on the Wait() call.
+
+```c#
+public bool Connect()
+{
+    _connection.Start().Wait();
+    return _connection.State == ConnectionState.Connected;
+}
+```
+
+The Connect function returns the state of the connection once the connection attempt has completed.
+
+### Asynchronous
+
+The use of Wait() is dropped in favour of await.
+
+```c#
+public async Task<bool> Connect()
+{
+    await _connection.Start();
+    return _connection != null && _connection.State == ConnectionState.Connected;
+}
+```
+
+The Connect function returns the state of the connection once the connection attempt has completed using the Task template.
+
+The calling code will asynchronously await the connection attempt to complete.
+
+```c#
+var client = new Client.AsyncClient(uri);
+var connected = await client.Connect(Client.Enums.TransportType.ServerSentEvents);
+```
 
 # Testing
 
