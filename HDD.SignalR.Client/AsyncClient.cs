@@ -87,7 +87,8 @@ namespace HDD.SignalR.Client
                 _disposed = true;
                 if (_connection != null)
                 {
-                    _connection.Dispose();
+                    _connection.Stop(new TimeSpan(0));
+                    _connection = null;
                 }
             }
         }
