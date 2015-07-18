@@ -7,6 +7,7 @@
 using HDD.Utility;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -56,7 +57,7 @@ namespace HDD.WPF.Client
                     {
                         Messages.Text += string.Format("\n{0}", ev.Value);
                     }));
-            var connected = _client.Connect();
+            var connected = _client.Connect(SignalR.Client.Enums.TransportType.ServerSentEvents);
             Messages.Text = string.Format("Connected: {0}", connected);
         }
 
