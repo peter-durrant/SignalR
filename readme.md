@@ -8,7 +8,7 @@ This code uses SignalR 2.2.0. See the [SignalR documentation](http://www.asp.net
 
 ### Startup
 
-The WebApp.Start method assumes a Startup class is available to map the hubs so <Startup> is not required.
+The `WebApp.Start` method assumes a Startup class is available to map the hubs so `<Startup>` is not required.
 
 ```c#
 _server = WebApp.Start(_uri.AbsoluteUri);
@@ -20,7 +20,7 @@ It can be supplied explicitly meaning that it could be named differently.
 _server = WebApp.Start<Startup>(_uri.AbsoluteUri);
 ```
 
-If the server is disposed, the resolver is disposed too. Therefore a new resolver needs to be created on startup and assigned to the GlobalHost.DependencyResolver
+If the server is disposed, the resolver is disposed too. Therefore a new resolver needs to be created on startup and assigned to the `GlobalHost.DependencyResolver`
 
 ```c#
 public void Configuration(IAppBuilder app)
@@ -44,7 +44,7 @@ public void SendMessage(string message)
 }
 ```
 
-The SendMessage function will not be defined on MessageHub.
+The `SendMessage` function will not be defined on `MessageHub`.
 
 #### Client to Server Messaging
 
@@ -104,7 +104,7 @@ If the server needs to disconnect the client and provide a readon, then an imple
 
 #### Authentication Attribute
 
-Create a custom authorization attribute (implementing AuthorizeAttribute). Override AuthorizeHubConnection to return true if authorised, otherwise return false. If the function returns false, the connection will be terminated.
+Create a custom authorization attribute (implementing `AuthorizeAttribute`). Override AuthorizeHubConnection to return true if authorised, otherwise return false. If the function returns false, the connection will be terminated.
 
 ```c#
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
@@ -122,7 +122,7 @@ class AuthorizeConnection : AuthorizeAttribute
 }
 ```
 
-Decorate the hub(s) with the AuthorizeConnection attribute to enable authorisation using this mechanism.
+Decorate the hub(s) with the `AuthorizeConnection` attribute to enable authorisation using this mechanism.
 
 ```c#
 [AuthorizeConnection]
@@ -133,14 +133,14 @@ public class MessageHub : Hub
 ## Client
 
 The HDD.SignalR.Client project includes:
-* Synchronous client - Client (implements IClient)
-* Asynchronous client - AsyncClient (implenents IAsyncClient)
+* Synchronous client - `Client` (implements `IClient`)
+* Asynchronous client - `AsyncClient` (implenents `IAsyncClient`)
 
 ### Synchronous
 
 A synchronous client will block it's thread until an action completes. Networking introduces latency, so it is recommended to use an asynchronous client if blocking will prevent an application responding, such as when using a UI thread.
 
-On attempting to establish a connection, the thread will block on the Wait() call.
+On attempting to establish a connection, the thread will block on the `Wait()` call.
 
 ```c#
 public bool Connect()
@@ -150,11 +150,11 @@ public bool Connect()
 }
 ```
 
-The Connect function returns the state of the connection once the connection attempt has completed.
+The `Connect` function returns the state of the connection once the connection attempt has completed.
 
 ### Asynchronous
 
-The use of Wait() is dropped in favour of await.
+The use of `Wait()` is dropped in favour of `await`.
 
 ```c#
 public async Task<bool> Connect()
@@ -164,7 +164,7 @@ public async Task<bool> Connect()
 }
 ```
 
-The Connect function returns the state of the connection once the connection attempt has completed using the Task template.
+The `Connect` function returns the state of the connection once the connection attempt has completed using the `Task` template.
 
 The calling code will asynchronously await the connection attempt to complete.
 
@@ -173,11 +173,30 @@ var client = new Client.AsyncClient(uri);
 var connected = await client.Connect();
 ```
 
+# WPF Client
+
+There is an example WPF project HDD.WPF.Client. This project creates a synchronous client that can connect to the HDD.Console.Server (for example).
+
+## Handling Events
+
+WPF's `Dispatcher` mechanism is required to marshall events back on to the main UI thread. This is the pattern
+
+```c#
+_client = new SignalR.Client.Client(new System.Uri(Uri));
+_client.OnMessage += (se, ev) =>
+    Application.Current.Dispatcher.BeginInvoke(
+        DispatcherPriority.Normal,
+        new Action(() =>
+        {
+            Messages.Text += string.Format("\n{0}", ev.Value);
+        }));
+```
+
 # Testing
 
-The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named COMPONENT\_ACTIVITY\_EXPECTEDRESULT.
+The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named `COMPONENT\_ACTIVITY\_EXPECTEDRESULT`.
 
-For example, the unit test Client\_ConnectMultipleClientsToServer\_ConnectionsSucceed exercises the Client component, attempts to connect multiple clients to the server, and expects all of the connections to succeed.
+For example, the unit test `Client\_ConnectMultipleClientsToServer\_ConnectionsSucceed` exercises the Client component, attempts to connect multiple clients to the server, and expects all of the connections to succeed.
 
 ## NSubstitute
 
