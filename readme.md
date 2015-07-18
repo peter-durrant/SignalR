@@ -138,7 +138,7 @@ The HDD.SignalR.Client project includes:
 
 ### Synchronous
 
-A synchronous client will block it's thread until an action completes. Networking introduces latency, so it is recommended to use asynchronous clients where possible.
+A synchronous client will block it's thread until an action completes. Networking introduces latency, so it is recommended to use an asynchronous client if blocking will prevent an application responding, such as when using a UI thread.
 
 On attempting to establish a connection, the thread will block on the Wait() call.
 
@@ -170,12 +170,14 @@ The calling code will asynchronously await the connection attempt to complete.
 
 ```c#
 var client = new Client.AsyncClient(uri);
-var connected = await client.Connect(Client.Enums.TransportType.ServerSentEvents);
+var connected = await client.Connect();
 ```
 
 # Testing
 
 The testing project HDD.SignalR.Test contains unit tests for the application parts. Unit test are named COMPONENT\_ACTIVITY\_EXPECTEDRESULT.
+
+For example, the unit test Client\_ConnectMultipleClientsToServer\_ConnectionsSucceed exercises the Client component, attempts to connect multiple clients to the server, and expects all of the connections to succeed.
 
 ## NSubstitute
 
